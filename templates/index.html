@@ -1,1 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RetailMind AI | Retail Intelligence</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+</head>
+<body>
+<div class="app-shell">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="brand-mark"><span>R</span><i></i></div>
+      <div><div class="brand-name">Retail Mind<span></span></div><div class="brand-sub">RETAIL INTELLIGENCE</div></div>
+    </div>
+    <div class="workspace-label">WORKSPACE</div>
+    <nav class="nav">
+      <button class="nav-item active" data-page="overview"><span class="nav-icon">◫</span>Overview</button>
+      <button class="nav-item" data-page="analytics"><span class="nav-icon">⌁</span>Sales analytics</button>
+      <button class="nav-item" data-page="forecast"><span class="nav-icon">↗</span>Demand forecasting</button>
+      <button class="nav-item" data-page="inventory"><span class="nav-icon">▤</span>Inventory intelligence</button>
+      <button class="nav-item" data-page="simulator"><span class="nav-icon">⚙</span>Decision simulator</button>
+    </nav>
+    <div class="sidebar-bottom">
+      <div class="status-dot"></div><span>ML engine connected</span>
+      <div class="sidebar-note">Retail analytics, made actionable.</div>
+    </div>
+  </aside>
+  <main class="main">
+    <header class="topbar">
+      <button class="mobile-menu" id="mobileMenu" aria-label="Toggle navigation">☰</button>
+      <div class="breadcrumb">Workspace <span>/</span> <strong id="crumb">Overview</strong></div>
+      <div class="topbar-right"><span class="live-pill"><i></i> LIVE WORKSPACE</span><div class="avatar">RM</div></div>
+    </header>
+    <div class="page-content">
+      <section class="page active" id="page-overview">
+        <div class="page-heading">
+          <div><div class="eyebrow">RETAIL PERFORMANCE</div><h1>Good to see you.</h1><p>Here's what's happening across your retail business.</p></div>
+          <div class="date-chip"><span>◷</span> Historical dataset overview</div>
+        </div>
+        <div class="metric-grid">
+          <article class="metric-card"><div class="metric-top"><span>Total revenue</span><span class="metric-icon teal">↗</span></div><div class="metric-value" id="totalRevenue">—</div><div class="metric-foot">From loaded monthly sales data</div></article>
+          <article class="metric-card"><div class="metric-top"><span>Products tracked</span><span class="metric-icon violet">▦</span></div><div class="metric-value" id="productCount">—</div><div class="metric-foot">Products in demand dataset</div></article>
+          <article class="metric-card"><div class="metric-top"><span>Reorder alerts</span><span class="metric-icon amber">!</span></div><div class="metric-value" id="reorderCount">—</div><div class="metric-foot">Items below simulated reorder point</div></article>
+          <article class="metric-card"><div class="metric-top"><span>Potential overstock</span><span class="metric-icon rose">⌁</span></div><div class="metric-value" id="overstockCount">—</div><div class="metric-foot">Review stock assumptions</div></article>
+        </div>
+        <div class="content-grid overview-charts">
+          <article class="panel panel-large"><div class="panel-heading"><div><h2>Revenue overview</h2><p>Monthly revenue across the historical dataset</p></div><span class="panel-tag">MONTHLY</span></div><div id="revenueChart" class="chart"></div></article>
+          <article class="panel"><div class="panel-heading"><div><h2>Inventory status</h2><p>Current recommendation mix</p></div></div><div id="statusChart" class="chart chart-donut"></div><div id="statusLegend" class="status-legend"></div></article>
+        </div>
+        <article class="panel"><div class="panel-heading"><div><h2>Top products by revenue</h2><p>Your leading products by recorded sales value</p></div><button class="text-button" data-goto="analytics">View analytics →</button></div><div id="topProductsChart" class="chart chart-bars"></div></article>
+        <div class="disclaimer"><span>ⓘ</span><div><strong>Decision-support prototype</strong><p>Inventory quantities, lead times, and safety-stock settings are simulated assumptions, not actual warehouse inventory records.</p></div></div>
+      </section>
 
+      <section class="page" id="page-analytics">
+        <div class="page-heading"><div><div class="eyebrow">PERFORMANCE EXPLORER</div><h1>Sales analytics</h1><p>Understand revenue patterns and the products driving sales.</p></div></div>
+        <div class="content-grid"><article class="panel panel-large"><div class="panel-heading"><div><h2>Monthly revenue</h2><p>Historical revenue trend</p></div></div><div id="revenueChart2" class="chart"></div></article><article class="panel"><div class="panel-heading"><div><h2>Model evaluation</h2><p>Temporal holdout performance</p></div></div><div id="evaluationTable" class="table-wrap"></div></article></div>
+        <article class="panel"><div class="panel-heading"><div><h2>Top products</h2><p>Ranked by historical revenue</p></div></div><div id="topProductsChart2" class="chart chart-bars"></div></article>
+      </section>
+
+      <section class="page" id="page-forecast">
+        <div class="page-heading"><div><div class="eyebrow">PREDICTIVE INTELLIGENCE</div><h1>Demand forecasting</h1><p>Project product demand using the trained Random Forest model.</p></div><span class="model-pill"><i></i> RANDOM FOREST</span></div>
+        <article class="panel forecast-controls"><div class="control-group"><label for="forecastProduct">Product / StockCode</label><select id="forecastProduct"><option>Loading products…</option></select></div><div class="control-group"><label for="forecastHorizon">Forecast horizon</label><select id="forecastHorizon"><option value="1">1 week</option><option value="2">2 weeks</option><option value="3">3 weeks</option><option value="4" selected>4 weeks</option></select></div><button class="primary-button" id="runForecast">Generate forecast <span>↗</span></button></article>
+        <div class="metric-grid forecast-metrics"><article class="metric-card"><div class="metric-top"><span>Average forecast demand</span><span class="metric-icon teal">⌁</span></div><div class="metric-value" id="forecastAverage">—</div><div class="metric-foot">Units per forecast week</div></article><article class="metric-card"><div class="metric-top"><span>Forecast horizon total</span><span class="metric-icon violet">Σ</span></div><div class="metric-value" id="forecastTotal">—</div><div class="metric-foot">Total predicted units</div></article><article class="metric-card"><div class="metric-top"><span>Selected product</span><span class="metric-icon amber">▦</span></div><div class="metric-value small-value" id="forecastSelected">—</div><div class="metric-foot">StockCode</div></article></div>
+        <article class="panel"><div class="panel-heading"><div><h2>Demand projection</h2><p>Historical demand and model-generated future values</p></div><span class="panel-tag">WEEKLY</span></div><div id="forecastChart" class="chart forecast-chart"></div></article>
+        <div class="disclaimer"><span>ⓘ</span><div><strong>Forecasts are estimates</strong><p>Predictions are model outputs, not guarantees. Review unusual spikes and product context before making purchasing decisions.</p></div></div>
+      </section>
+
+      <section class="page" id="page-inventory">
+        <div class="page-heading"><div><div class="eyebrow">STOCK OPTIMIZATION</div><h1>Inventory intelligence</h1><p>Prioritize replenishment decisions using demand variability and lead-time assumptions.</p></div><a class="secondary-button" href="/api/inventory.csv">↓ Export CSV</a></div>
+        <div class="inventory-toolbar"><div class="search-box"><span>⌕</span><input id="inventorySearch" type="search" placeholder="Search StockCode…"></div><select id="inventoryStatus"><option>All</option><option>Reorder Needed</option><option>Potential Overstock</option><option>Healthy</option></select><span id="inventoryCount" class="results-count"></span></div>
+        <article class="panel table-panel"><div class="table-wrap"><table><thead><tr><th>STOCK CODE</th><th>AVG. WEEKLY DEMAND</th><th>CURRENT STOCK*</th><th>SAFETY STOCK*</th><th>REORDER POINT*</th><th>RECOMMENDED ORDER*</th><th>STATUS</th></tr></thead><tbody id="inventoryBody"><tr><td colspan="7">Loading inventory…</td></tr></tbody></table></div></article>
+        <div class="disclaimer"><span>ⓘ</span><div><strong>* Simulated inventory values</strong><p>The dataset does not contain actual inventory-on-hand or supplier lead-time records. These figures use the project's assumptions.</p></div></div>
+      </section>
+
+      <section class="page" id="page-simulator">
+        <div class="page-heading"><div><div class="eyebrow">WHAT-IF PLANNING</div><h1>Decision simulator</h1><p>Explore how demand and supply assumptions affect replenishment recommendations.</p></div></div>
+        <div class="simulator-layout"><article class="panel simulator-form"><div class="panel-heading"><div><h2>Scenario inputs</h2><p>Adjust the assumptions for a product</p></div></div>
+          <form id="simulatorForm">
+            <div class="form-row"><label for="simDemand">Average weekly demand <small>units / week</small></label><input id="simDemand" type="number" min="0" step="0.1" value="10" required></div>
+            <div class="form-row"><label for="simStd">Weekly demand standard deviation <small>units</small></label><input id="simStd" type="number" min="0" step="0.1" value="2" required></div>
+            <div class="form-row"><label for="simStock">Current stock <small>units</small></label><input id="simStock" type="number" min="0" step="1" value="20" required></div>
+            <div class="form-row"><label for="simLead">Supplier lead time <small>weeks</small></label><input id="simLead" type="number" min="1" max="12" step="1" value="2" required></div>
+            <div class="form-row"><label for="simSafety">Safety factor <small>service-level proxy</small></label><input id="simSafety" type="number" min="0" max="4" step="0.05" value="1.65" required></div>
+            <button class="primary-button full-button" type="submit">Calculate recommendation <span>↗</span></button>
+          </form>
+        </article>
+        <article class="panel result-panel"><div class="panel-heading"><div><h2>Recommendation</h2><p>Updates based on your scenario</p></div><span class="panel-tag">SIMULATION</span></div><div id="simStatus" class="recommendation-status">Enter a scenario</div><div class="result-list"><div><span>Safety stock</span><strong id="simSafetyStock">—</strong></div><div><span>Reorder point</span><strong id="simROP">—</strong></div><div><span>Recommended order quantity</span><strong id="simOrder">—</strong></div></div><div class="formula-box"><strong>Method</strong><p>Safety stock = safety factor × demand standard deviation × √lead time</p><p>Reorder point = average weekly demand × lead time + safety stock</p></div></article></div>
+      </section>
+      <footer class="footer"><span>RetailMind AI</span><span>Intelligent retail analytics & inventory optimization</span><span>Built with Python + ML</span></footer>
+    </div>
+  </main>
+</div>
+<div id="toast" class="toast" role="status"></div>
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
