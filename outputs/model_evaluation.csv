@@ -1,0 +1,3 @@
+,MAE,RMSE,WAPE (%)
+Random Forest,881.16,6437.22,78.21
+Previous Week Baseline,884.92,6442.95,78.54
